@@ -1,0 +1,4 @@
+class SplashScreenInitialParams{
+  SplashScreenInitialParams();
+
+}
