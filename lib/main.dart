@@ -1,4 +1,7 @@
 import 'package:camera_webview/Navigation/navigator.dart';
+import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_cubit.dart';
+import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_initial_params.dart';
+import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_navigator.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_cubit.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_initial_params.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_navigator.dart';
@@ -14,11 +17,19 @@ var getIt = GetIt.instance;
 void main() {
   getIt.registerSingleton<AppNavigator>(AppNavigator());
 
-  getIt.registerSingleton<SplashScreenNavigator>(
-      SplashScreenNavigator(AppNavigator()));
+  getIt
+      .registerSingleton<SplashScreenNavigator>(SplashScreenNavigator(getIt()));
+
+  getIt.registerSingleton<OnBoardingScreenNavigator>(
+      OnBoardingScreenNavigator(getIt()));
 
   getIt.registerFactoryParam<SplashScreenCubit, SplashScreenInitialParams,
       dynamic>((params, _) => SplashScreenCubit(params, getIt()));
+
+  getIt.registerFactoryParam<
+      OnBoardingScreenCubit,
+      OnBoardingScreenInitialParams,
+      dynamic>((params, _) => OnBoardingScreenCubit(params, getIt()));
 
   runApp(
     DevicePreview(

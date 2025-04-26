@@ -1,3 +1,4 @@
+import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_initial_params.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_initial_params.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_navigator.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_state.dart';
@@ -12,4 +13,8 @@ class SplashScreenCubit extends Cubit<SplashScreenState> {
 
   void onInit(SplashScreenInitialParams initialParams) =>
       emit(state.copyWith());
+
+  void moveToNextScreen() {
+    navigator.openOnBoardingScreenPage(OnBoardingScreenInitialParams());
+  }
 }

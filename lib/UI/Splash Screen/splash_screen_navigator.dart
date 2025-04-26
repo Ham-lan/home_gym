@@ -1,3 +1,4 @@
+import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_navigator.dart';
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_initial_params.dart';
 import 'package:camera_webview/main.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../Navigation/navigator.dart';
 import 'splash_screen_page.dart';
 
-class SplashScreenNavigator with SplashScreenRoute {
+class SplashScreenNavigator with SplashScreenRoute, OnBoardingScreenRoute {
   SplashScreenNavigator(this.navigator);
   @override
   // TODO: implement context

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera_webview/UI/Splash%20Screen/splash_screen_initial_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +24,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     // TODO : Fix it Later
     cubit.onInit(SplashScreenInitialParams());
     cubit.navigator.context = context;
+
+    // Timer.periodic(Duration(seconds: 5), (timer) {
+    //   cubit.moveToNextScreen();
+    // });
+
+    Timer(Duration(seconds: 5), () {
+      cubit.moveToNextScreen();
+    });
   }
 
   @override
@@ -29,7 +39,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text('Salam')],
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [Center(child: Text('Home Gym'))],
       ),
     );
   }
