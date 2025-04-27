@@ -1,4 +1,16 @@
 import 'package:camera_webview/Navigation/navigator.dart';
+import 'package:camera_webview/UI/HomePage/PullUp/pull_ups_page_cubit.dart';
+import 'package:camera_webview/UI/HomePage/PullUp/pull_ups_page_initial_params.dart';
+import 'package:camera_webview/UI/HomePage/PullUp/pull_ups_page_navigator.dart';
+import 'package:camera_webview/UI/HomePage/PushUp/push_ups_page_cubit.dart';
+import 'package:camera_webview/UI/HomePage/PushUp/push_ups_page_initial_params.dart';
+import 'package:camera_webview/UI/HomePage/PushUp/push_ups_page_navigator.dart';
+import 'package:camera_webview/UI/HomePage/Squat/squats_page_cubit.dart';
+import 'package:camera_webview/UI/HomePage/Squat/squats_page_initial_params.dart';
+import 'package:camera_webview/UI/HomePage/Squat/squats_page_navigator.dart';
+import 'package:camera_webview/UI/HomePage/home_page_cubit.dart';
+import 'package:camera_webview/UI/HomePage/home_page_initial_params.dart';
+import 'package:camera_webview/UI/HomePage/home_page_navigator.dart';
 import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_cubit.dart';
 import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_initial_params.dart';
 import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_navigator.dart';
@@ -23,13 +35,30 @@ void main() {
   getIt.registerSingleton<OnBoardingScreenNavigator>(
       OnBoardingScreenNavigator(getIt()));
 
+  getIt.registerSingleton<HomePageNavigator>(HomePageNavigator(getIt()));
+  getIt.registerSingleton<PushUpsPageNavigator>(PushUpsPageNavigator(getIt()));
+  getIt.registerSingleton<PullUpsPageNavigator>(PullUpsPageNavigator(getIt()));
+  getIt.registerSingleton<SquatsPageNavigator>(SquatsPageNavigator(getIt()));
+
   getIt.registerFactoryParam<SplashScreenCubit, SplashScreenInitialParams,
       dynamic>((params, _) => SplashScreenCubit(params, getIt()));
+
+  getIt.registerFactoryParam<PullUpsPageCubit, PullUpsPageInitialParams,
+      dynamic>((params, _) => PullUpsPageCubit(params, getIt()));
+
+  getIt.registerFactoryParam<PushUpsPageCubit, PushUpsPageInitialParams,
+      dynamic>((params, _) => PushUpsPageCubit(params, getIt()));
+
+  getIt.registerFactoryParam<SquatsPageCubit, SquatsPageInitialParams, dynamic>(
+      (params, _) => SquatsPageCubit(params, getIt()));
 
   getIt.registerFactoryParam<
       OnBoardingScreenCubit,
       OnBoardingScreenInitialParams,
       dynamic>((params, _) => OnBoardingScreenCubit(params, getIt()));
+
+  getIt.registerFactoryParam<HomePageCubit, HomePageInitialParams, dynamic>(
+      (params, _) => HomePageCubit(params, getIt()));
 
   runApp(
     DevicePreview(

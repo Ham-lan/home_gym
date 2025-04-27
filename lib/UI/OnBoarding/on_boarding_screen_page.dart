@@ -31,6 +31,9 @@ class _OnBoardingScreenPageState extends State<OnBoardingScreenPage> {
         // child:
 
         Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,25 +63,44 @@ class _OnBoardingScreenPageState extends State<OnBoardingScreenPage> {
 
           // Get Started button
 
-          Positioned(
-            bottom: 40,
-            left: 20,
-            right: 20,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: Text(
-                'Get Started',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+          // Positioned(
+          //   bottom: 40,
+          //   left: 20,
+          //   right: 20,
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       cubit.moveToHomePage();
+          //     },
+          //     style: ElevatedButton.styleFrom(
+          //       primary: Colors.blue,
+          //       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(30),
+          //       ),
+          //     ),
+          //     child: Text(
+          //       'Get Started',
+          //       style: TextStyle(fontSize: 18, color: Colors.white),
+          //     ),
+          //   ),
+          // ),
+
+          ElevatedButton(
+            onPressed: () {
+              cubit.moveToHomePage();
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue,
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
-          ),
+            child: Text(
+              'Get Started',
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+          )
         ],
       ),
     );

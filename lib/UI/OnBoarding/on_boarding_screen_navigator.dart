@@ -1,3 +1,4 @@
+import 'package:camera_webview/UI/HomePage/home_page_navigator.dart';
 import 'package:camera_webview/UI/OnBoarding/on_boarding_screen_page.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ import '../../Navigation/navigator.dart';
 import '../../main.dart';
 import 'on_boarding_screen_initial_params.dart';
 
-class OnBoardingScreenNavigator with OnBoardingScreenRoute {
+class OnBoardingScreenNavigator with OnBoardingScreenRoute, HomePageRoute {
   OnBoardingScreenNavigator(this.navigator);
   @override
   // TODO: implement context
