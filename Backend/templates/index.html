@@ -1,0 +1,46 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Camera Feed</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+      var socket = io.connect('http://localhost:5000');
+
+      socket.on('new_video_frame', function(data) {
+        const videoElement = document.getElementById('videoElement');
+        const byteArray = Uint8Array.from(atob(data.videoData), c => c.charCodeAt(0));
+        const videoBlob = new Blob([byteArray], {type: 'video/mp4'});
+        const videoURL = URL.createObjectURL(videoBlob);
+        videoElement.src = videoURL;
+      });
+    </script>
+  </head>
+  <body>
+    <video id="videoElement" autoplay controls></video>
+  </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Stream</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>Live Video Feed</h1>
+    <img id="videoFrame" style="max-width: 100%;" alt="Video Stream will appear here">
+
+    <script>
+      const socket = io();
+
+      socket.on('new_video_frame', (data) => {
+        if (data.videoData) {
+          document.getElementById('videoFrame').src = 'data:image/jpeg;base64,' + data.videoData;
+        }
+      });
+    </script>
+  </body>
+</html>
