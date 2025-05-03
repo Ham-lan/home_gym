@@ -57,6 +57,38 @@ class PoseDetector:
             cv.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 2)
         return angle
 
+def GoDown(detector , frame):
+     # Define landmark indices (MediaPipe pose landmarks)
+    LEFT_SHOULDER = 11
+    RIGHT_SHOULDER = 12
+    LEFT_ELBOW = 13
+    RIGHT_ELBOW = 14
+    LEFT_HIP = 23
+    RIGHT_HIP = 24
+
+    # Detect pose and get landmarks
+    frame = detector.findpose(frame)
+    lmList = detector.getposition(frame)
+
+    feedback = []
+    if len(lmList) > 0:
+        # Check shoulder angle (elbow-shoulder-hip ~45°)
+        left_shoulder_angle = detector.find_angle(frame, LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP)
+        right_shoulder_angle = detector.find_angle(frame, RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP)
+        avg_shoulder_angle = ( ( 360 -left_shoulder_angle ) + right_shoulder_angle) / 2
+        if abs(avg_shoulder_angle - 45) > 10:
+            feedback.append("Adjust arms to ~45° at shoulders!")
+        else:
+            feedback.append(f"Shoulder Angle: {int(avg_shoulder_angle)}° (Good)")
+
+    # Display feedback
+    for i, msg in enumerate(feedback):
+        cv.putText(frame, msg, (20, 50 + i * 30), cv.FONT_HERSHEY_PLAIN, 2, 
+                    (0, 0, 255) if "Adjust" in msg else (0, 255, 0), 2)
+
+
+
+
 def main():
     # Initialize video capture (use 0 for webcam or provide a video file path)
     cap = cv.VideoCapture('PerfectPushUp.mp4')

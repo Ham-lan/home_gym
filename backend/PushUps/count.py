@@ -184,20 +184,24 @@ def getData(img, count, dir, pTime):
 # Initialize variables for the loop
 count = totalCount
 
-while True:
-    success, img = cap.read()
-    if not success:
-        print("Failed to read from camera.")
-        break
+def main():
+    while True:
+        success, img = cap.read()
+        if not success:
+            print("Failed to read from camera.")
+            break
 
-    # Process the frame
-    img, count, dir, pTime = getData(img, count, dir, pTime)
-    print("Total count = ", count)
+        # Process the frame
+        img, count, dir, pTime = getData(img, count, dir, pTime)
+        print("Total count = ", count)
 
-    cv.imshow('Cap', img)
+        cv.imshow('Cap', img)
 
-    if cv.waitKey(1) & 0xFF == ord('d'):
-        break
+        if cv.waitKey(1) & 0xFF == ord('d'):
+            break
 
-cap.release()
-cv.destroyAllWindows()
+    cap.release()
+    cv.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()

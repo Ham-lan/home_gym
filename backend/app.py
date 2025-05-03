@@ -9,7 +9,26 @@ import time
 
 import module as pm
 
+import PullUps.dead_hang as DH
+
+import PullUps.negative_pullups as NP
+import PullUps.pull_up as PLU
+import PullUps.scapular_contraction as SC
+
+import PushUps.form as PF
+import PushUps.go_down as GD
+import PushUps.plank as PUP
+import PushUps.count as PUPC
+
+import Squats.squats as SSQ
+
+
+
+
+
 # import push_up3 as pp
+
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -42,11 +61,14 @@ def index():
 def receive_video():
     data = request.json
     base64_video_data = data.get('videoData')
+    process = data.get('process')
+
+    # print(exercise)
 
     if base64_video_data:
         
-        base64_video_data = processVideo(base64_video_data=base64_video_data)
-        socketio.emit('new_video_frame', {'videoData': base64_video_data})
+        base64_video_data = processVideo(base64_video_data=base64_video_data , process=process)
+        socketio.emit('new_video_frame', {'videoData': base64_video_data} )
         # render_template('index.html')
         return jsonify({"status": "success"})
     else:
@@ -408,7 +430,7 @@ def getPullUps(img):
 
         return frame
 
-def processVideo(base64_video_data):
+def processVideo(base64_video_data , process ):
     global totalCount  # Use the global totalCount
 
     img_data = base64.b64decode(base64_video_data)
@@ -450,10 +472,24 @@ def processVideo(base64_video_data):
     # Process the frame
     # img  = check_pre_pushup(img)
 
-    img = getPullUps(img)
+    # img = getPullUps(img)
 
+    if process == 'DH':
+        img = DH.getDeadHang(img,detector=pm.posedetector())
+    elif process == 'NP':
+        img = NP.negativePullUps(detector=pm.posedetector() , frame=img)
+    elif process == 'PF':
+        img = PF.form(detector=pm.posedetector() , img=img)
+    elif process == 'GD':
+        img = GD.GoDown(detector=pm.posedetector() , frame=img)
+    elif process == 'SQ':
+        img = SSQ.squats(detector=pm.posedetector() , frame=img)
+    
 
-    # img = check_pre_pushup(img)
+    
+
+    # else:
+        # img = check_pre_pushup(img)
 
     
     # img , count , dir , pTime = getCurls(img,count,dir,pTime)

@@ -225,6 +225,50 @@ class PoseDetector:
             cv.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 2)
         return angle
 
+def squats(detector , frame):
+    # Define landmark indices (MediaPipe pose landmarks)
+    LEFT_SHOULDER = 11
+    RIGHT_SHOULDER = 12
+    LEFT_HIP = 23
+    RIGHT_HIP = 24
+    LEFT_KNEE = 25
+    RIGHT_KNEE = 26
+    LEFT_ANKLE = 27
+    RIGHT_ANKLE = 28
+
+    # Detect pose and get landmarks
+    frame = detector.findpose(frame)
+    lmList = detector.getposition(frame)
+
+    feedback = []
+    if len(lmList) > 0:
+        # 1. Check knee-hip-shoulder angle (~90° at bottom)
+        left_khs_angle = detector.find_angle(frame, LEFT_KNEE, LEFT_HIP, LEFT_SHOULDER)
+        right_khs_angle = detector.find_angle(frame, RIGHT_KNEE, RIGHT_HIP, RIGHT_SHOULDER)
+        avg_khs_angle = (left_khs_angle + right_khs_angle) / 2
+        if abs(avg_khs_angle - 60) > 10:
+            feedback.append(f"Hip-Shoulder: {int(avg_khs_angle)}° (Adjust to ~90°)")
+        else:
+            feedback.append(f"Hip-Shoulder: {int(avg_khs_angle)}° (Good)")
+
+        # 2. Check toe-knee-hip angle (~90° at bottom)
+        left_tkh_angle = detector.find_angle(frame, LEFT_ANKLE, LEFT_KNEE, LEFT_HIP)
+        right_tkh_angle = detector.find_angle(frame, RIGHT_ANKLE, RIGHT_KNEE, RIGHT_HIP)
+        avg_tkh_angle = (left_tkh_angle + right_tkh_angle) / 2
+        if abs(  ( 360 - avg_tkh_angle ) - 90) > 10:
+            feedback.append(f"Toe-Knee: {int(avg_tkh_angle)}° (Adjust to ~90°)")
+        else:
+            feedback.append(f"Toe-Knee: {int(avg_tkh_angle)}° (Good)")
+
+    # Display feedback
+    for i, msg in enumerate(feedback):
+        cv.putText(frame, msg, (20, 50 + i * 30), cv.FONT_HERSHEY_PLAIN, 2, 
+                    (0, 0, 255) if "Adjust" in msg else (0, 255, 0), 2)
+
+    return frame    
+
+
+
 def main():
     # Initialize video capture (use 0 for webcam or provide a video file path)
     cap = cv.VideoCapture('Squat.mp4')

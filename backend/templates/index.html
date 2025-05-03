@@ -21,6 +21,155 @@
 </html> -->
 
 
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Stream</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>Live Video Feed</h1>
+    <img id="videoFrame" style="max-width: 100%;" alt="Video Stream will appear here">
+
+    <script>
+      const socket = io();
+
+      socket.on('new_video_frame', (data) => {
+        if (data.videoData) {
+          document.getElementById('videoFrame').src = 'data:image/jpeg;base64,' + data.videoData;
+        }
+      });
+
+    //   socket.on('connect', () => {
+    //         clientSid = socket.id;
+    //         console.log('Connected to /abc with sid:', clientSid);
+    //     });
+
+    </script>
+  </body>
+</html> -->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home GYM App</title>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <style>
+        video, img { width: 100%; max-width: 640px; }
+        select, button { margin: 10px; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Home GYM App</h1>
+    <select id="exercise">
+        <option value="PlU">Plank</option>
+        <option value="Sq">Squat</option>
+    </select>
+    <button onclick="startVideo()">Start Camera</button>
+    <button onclick="stopVideo()">Stop Camera</button>
+    <video id="video" autoplay playsinline></video>
+    <img id="videoFrame" alt="Processed video stream will appear here">
+    <script>
+        const username = 'abc';
+        const password = 'abc12';
+        const authHeader = 'Basic ' + btoa(username + ':' + password);
+        console.log('Auth header:', authHeader);
+
+        // Connect to /abc namespace
+        const socket = io('/', {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        Authorization: authHeader
+                    }
+                }
+            }
+        });
+
+        let clientSid = null;
+        let stream = null;
+        const userId = window.userId || 'unknown';
+        console.log('User ID:', userId);
+
+        socket.on('connect', () => {
+            clientSid = socket.id;
+            console.log('Connected to /abc with sid:', clientSid);
+        });
+
+        socket.on('new_video_frame', (data) => {
+            console.log('Received new_video_frame:', data);
+            if (data.videoData) {
+                document.getElementById('videoFrame').src = data.videoData; // Already prefixed with data:image/jpeg;base64,
+            }
+        });
+
+        socket.on('connect_error', (err) => {
+            console.error('SocketIO connect error:', err.message);
+        });
+
+        async function startVideo() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                console.log('Camera started');
+                sendFrames();
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+            }
+        }
+
+        function stopVideo() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                document.getElementById('video').srcObject = null;
+                stream = null;
+                console.log('Camera stopped');
+            }
+        }
+
+        function sendFrames() {
+            if (!stream || !clientSid) {
+                console.log('Stream or SID not ready:', { stream: !!stream, clientSid });
+                return;
+            }
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            const base64Data = canvas.toDataURL('image/jpeg', 0.8);
+            const processType = document.getElementById('exercise').value;
+            fetch('/send_video', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authHeader
+                },
+                body: JSON.stringify({
+                    videoData: base64Data,
+                    process: processType,
+                    sid: clientSid,
+                    userId: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('POST response:', data))
+            .catch(err => console.error('Error sending frame:', err));
+            setTimeout(sendFrames, 500); // 2 FPS
+        }
+    </script>
+</body>
+</html> -->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,6 +184,18 @@
 
     <script>
       const socket = io();
+
+      // Extract room_id from URL query string
+      const urlParams = new URLSearchParams(window.location.search);
+      const roomId = urlParams.get('room_id');
+
+      socket.on('connect', () => {
+        console.log('Connected to Socket.IO');
+        if (roomId) {
+          console.log('Joining room:', roomId);
+          socket.emit('join_room', { room: roomId });
+        }
+      });
 
       socket.on('new_video_frame', (data) => {
         if (data.videoData) {

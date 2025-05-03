@@ -77,10 +77,12 @@
 #         break
 
 #     # Detect pose
-#     image = detector.findpose(frame)
+#     
+# img = detector.findpose(frame)
 
 #     # Get landmark positions
-#     lm_list = detector.getposition(image)
+#     lm_list = detector.getposition(
+# img)
 
 #     if lm_list:
 #         # Get coordinates for line (head to toes)
@@ -93,16 +95,22 @@
 #         toes_y = (left_ankle[1] + right_ankle[1]) // 2
 
 #         # Draw line from head to toes
-#         cv2.line(image, (head[0], head[1]), (toes_x, toes_y), (0, 255, 0), 2)
+#         cv2.line(
+# img, (head[0], head[1]), (toes_x, toes_y), (0, 255, 0), 2)
 
 #         # Check push-up form
-#         if is_pushup_form_correct(detector, image):
-#             cv2.putText(image, "Correct Form", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+#         if is_pushup_form_correct(detector, 
+# img):
+#             cv2.putText(
+# img, "Correct Form", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 #         else:
-#             cv2.putText(image, "Incorrect Form", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+#             cv2.putText(
+# img, "Incorrect Form", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-#     # Display the image
-#     cv2.imshow('Push-up Form Correction', image)
+#     # Display the 
+# img
+#     cv2.imshow('Push-up Form Correction', 
+# img)
 
 #     # Break loop on 'q' press
 #     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -160,10 +168,12 @@
 #         break
 
 #     # Detect pose
-#     image = detector.findpose(frame, draw=False)
+#     
+# img = detector.findpose(frame, draw=False)
 
 #     # Get landmark positions
-#     lm_list = detector.getposition(image, draw=False)
+#     lm_list = detector.getposition(
+# img, draw=False)
 
 #     if lm_list:
 #         # Get coordinates for line (head to toes)
@@ -176,10 +186,13 @@
 #         toes_y = (left_ankle[1] + right_ankle[1]) // 2
 
 #         # Draw line from head to toes
-#         cv2.line(image, (head[0], head[1]), (toes_x, toes_y), (0, 255, 0), 2)
+#         cv2.line(
+# img, (head[0], head[1]), (toes_x, toes_y), (0, 255, 0), 2)
 
-#     # Display the image
-#     cv2.imshow('Toes to Head Line', image)
+#     # Display the 
+# img
+#     cv2.imshow('Toes to Head Line', 
+# img)
 
 #     # Break loop on 'q' press
 #     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -236,10 +249,12 @@
 #         break
 
 #     # Detect pose and draw all landmarks
-#     image = detector.findpose(frame, draw=True)
+#     
+# img = detector.findpose(frame, draw=True)
 
 #     # Get landmark positions
-#     lm_list = detector.getposition(image, draw=False)
+#     lm_list = detector.getposition(
+# img, draw=False)
 
 #     if lm_list:
 #         # Get coordinates for line (head to left toe)
@@ -247,10 +262,13 @@
 #         left_toe = lm_list[25][1:]  # Left ankle (landmark 25)
 
 #         # Draw line from head to left toe
-#         cv2.line(image, (head[0], head[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
+#         cv2.line(
+# img, (head[0], head[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
 
-#     # Display the image
-#     cv2.imshow('Toe to Head Line with Landmarks', image)
+#     # Display the 
+# img
+#     cv2.imshow('Toe to Head Line with Landmarks', 
+# img)
 
 #     # Break loop on 'q' press
 #     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -308,10 +326,12 @@
 #         break
 
 #     # Detect pose and draw all landmarks
-#     image = detector.findpose(frame, draw=False)
+#     
+# img = detector.findpose(frame, draw=False)
 
 #     # Get landmark positions
-#     lm_list = detector.getposition(image, draw=False)
+#     lm_list = detector.getposition(
+# img, draw=False)
 
 #     if lm_list and len(lm_list) > 29:  # Ensure landmark 29 exists
 #         # Get coordinates for line (nose to left foot index)
@@ -319,10 +339,13 @@
 #         left_toe = lm_list[29][1:]  # Left foot index (landmark 29)
 
 #         # Draw line from nose to left toe
-#         cv2.line(image, (nose[0], nose[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
+#         cv2.line(
+# img, (nose[0], nose[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
 
-#     # Display the image
-#     cv2.imshow('Nose to Left Toe Line with Landmarks', image)
+#     # Display the 
+# img
+#     cv2.imshow('Nose to Left Toe Line with Landmarks', 
+# img)
 
 #     # Break loop on 'q' press
 #     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -405,47 +428,89 @@ def check_arm_angle(detector, img):
     # Check if arm is approximately 90° to ground (within ±10° tolerance)
     return 80 <= angle <= 100
 
-# Initialize webcam and pose detector
-cap = cv2.VideoCapture(0)
-detector = PoseDetector()
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-
+def form(detector , img):
     # Detect pose and draw all landmarks
-    image = detector.findpose(frame, draw=True)
+    
+    img = detector.findpose(img, draw=True)
 
     # Get landmark positions
-    lm_list = detector.getposition(image, draw=False)
+    lm_list = detector.getposition(
+        img, draw=False)
 
     if lm_list and len(lm_list) > 29:  # Ensure landmark 29 exists
-        # Get coordinates for line (nose to left foot index)
+    # Get coordinates for line (nose to left foot index)
         nose = lm_list[0][1:]  # Nose (landmark 0)
         left_toe = lm_list[29][1:]  # Left foot index (landmark 29)
 
+    # Draw line from nose to left toe
+        cv2.line(
+            img, (nose[0], nose[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
+
+    # Check arm angle with ground
+    if check_arm_angle(detector, 
+    img):
+        cv2.putText(
+            img, "Arms Correct (90°)", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    else:
+        cv2.putText(
+            img, "Adjust Arms to 90°", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    
+    return img
+
+
+def main():
+
+    # Initialize webcam and pose detector
+    cap = cv2.VideoCapture(0)
+    detector = PoseDetector()
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Detect pose and draw all landmarks
+        
+        img = detector.findpose(frame, draw=True)
+
+        # Get landmark positions
+        lm_list = detector.getposition(
+            img, draw=False)
+
+        if lm_list and len(lm_list) > 29:  # Ensure landmark 29 exists
+        # Get coordinates for line (nose to left foot index)
+            nose = lm_list[0][1:]  # Nose (landmark 0)
+            left_toe = lm_list[29][1:]  # Left foot index (landmark 29)
+
         # Draw line from nose to left toe
-        cv2.line(image, (nose[0], nose[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
+            cv2.line(
+                img, (nose[0], nose[1]), (left_toe[0], left_toe[1]), (0, 255, 0), 2)
 
         # Check arm angle with ground
-        if check_arm_angle(detector, image):
-            cv2.putText(image, "Arms Correct (90°)", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        if check_arm_angle(detector, 
+        img):
+            cv2.putText(
+                img, "Arms Correct (90°)", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         else:
-            cv2.putText(image, "Adjust Arms to 90°", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(
+                img, "Adjust Arms to 90°", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-    # Display the image
-    cv2.imshow('Nose to Left Toe Line with Arm Check', image)
+        # Display the 
+        # img
+        cv2.imshow('Nose to Left Toe Line with Arm Check', 
+        img)
 
-    # Break loop on 'q' press
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        # Break loop on 'q' press
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-# Release resources
-cap.release()
-cv2.destroyAllWindows()
-detector.pose.close()
+    # Release resources
+    cap.release()
+    cv2.destroyAllWindows()
+    detector.pose.close()
 
+if __name__ == "__main__":
+    main()
 
 # import cv2
 # import mediapipe as mp
@@ -493,10 +558,12 @@ detector.pose.close()
 #         break
 
 #     # Detect pose and draw all landmarks
-#     image = detector.findpose(frame, draw=True)
+#     
+# img = detector.findpose(frame, draw=True)
 
 #     # Get landmark positions
-#     lm_list = detector.getposition(image, draw=False)
+#     lm_list = detector.getposition(
+# img, draw=False)
 
 #     if lm_list and len(lm_list) > 15:  # Ensure landmark 15 exists
 #         # Get coordinates for line (left shoulder to left wrist)
@@ -504,10 +571,13 @@ detector.pose.close()
 #         wrist = lm_list[15][1:]  # Left wrist (landmark 15)
 
 #         # Draw line from shoulder to wrist
-#         cv2.line(image, (shoulder[0], shoulder[1]), (wrist[0], wrist[1]), (0, 255, 0), 2)
+#         cv2.line(
+# img, (shoulder[0], shoulder[1]), (wrist[0], wrist[1]), (0, 255, 0), 2)
 
-#     # Display the image
-#     cv2.imshow('Shoulder to Wrist Line with Landmarks', image)
+#     # Display the 
+# img
+#     cv2.imshow('Shoulder to Wrist Line with Landmarks', 
+# img)
 
 #     # Break loop on 'q' press
 #     if cv2.waitKey(1) & 0xFF == ord('q'):
