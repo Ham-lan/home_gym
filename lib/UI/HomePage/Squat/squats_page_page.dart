@@ -36,8 +36,10 @@ class _SquatsPagePageState extends State<SquatsPagePage> {
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          CameraScreen(onVideoAvailable: (str) {})));
+                      builder: (context) => CameraScreen(
+                            onVideoAvailable: (str) {},
+                            exercise: 'SQ',
+                          )));
                 },
                 child: Text('Squat')),
           ),

@@ -8,17 +8,17 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-class CameraScreen extends StatefulWidget {
+class CameraWebviewAuth extends StatefulWidget {
   final Function(String) onVideoAvailable;
   final String exercise;
 
-  CameraScreen({required this.onVideoAvailable, required this.exercise});
+  CameraWebviewAuth({required this.onVideoAvailable, required this.exercise});
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _CameraScreenState extends State<CameraWebviewAuth> {
   CameraController? _controller;
   List<CameraDescription>? cameras;
   CameraDescription? camera;
@@ -26,12 +26,20 @@ class _CameraScreenState extends State<CameraScreen> {
 
   late final WebViewController _webViewController;
 
+  // Basic Auth credentials
+  String username = 'abc';
+  String password = 'abc12';
+  // String authHeader = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
   @override
   void initState() {
     super.initState();
     _initializeCamera();
 
     late final PlatformWebViewControllerCreationParams params;
+
+    String authHeader =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(
@@ -47,7 +55,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
     webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse('http://192.168.10.40:5000'));
+      ..loadRequest(Uri.parse('http://192.168.10.40:5000'),
+          headers: {'authorization': authHeader});
 
     // Uri.parse('http://192.168.0.37:8080'));
 
@@ -89,11 +98,21 @@ class _CameraScreenState extends State<CameraScreen> {
 
     final url = Uri.parse('http://192.168.10.40:5000/send_video');
 
+    // Basic Auth credentials
+    // const username = 'abc';
+    // const password = 'abc12';
+    String authHeader =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: json
-          .encode({'videoData': base64VideoData, 'process': widget.exercise}),
+      body: json.encode({
+        'videoData': base64VideoData,
+        'process': widget.exercise,
+        'sid': authHeader,
+        'userId': 'hamza@gmail.com'
+      }),
     );
 
     if (response.statusCode == 200) {

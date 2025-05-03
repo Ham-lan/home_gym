@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:camera_webview/UI/HomePage/PushUp/push_ups_page_initial_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../camera_muti_person.dart';
+import '../../../camera_webview.dart';
 import 'push_ups_page_cubit.dart';
 
 class PushUpsPagePage extends StatefulWidget {
@@ -27,10 +32,32 @@ class _PushUpsPagePageState extends State<PushUpsPagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [Text('PushUps')],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: ElevatedButton(
+                onPressed: () {
+                  Random random = new Random();
+                  int randomNumber =
+                      random.nextInt(100); // from 0 upto 99 included
+
+                  const username = 'abc';
+                  const password = 'abc12';
+                  final authHeader =
+                      'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CameraMultiSocketIO(
+                            roomId: 'room' + randomNumber.toString(),
+                            exercise: 'DH',
+                            authHeader: authHeader,
+                          )));
+                },
+                child: Text('PushUp')),
+          ),
+        ],
       ),
     );
   }
